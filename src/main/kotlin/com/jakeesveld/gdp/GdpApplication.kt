@@ -4,8 +4,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class GdpApplication
+class GdpApplication {
 
-fun main(args: Array<String>) {
-    runApplication<GdpApplication>(*args)
+    companion object{
+        private lateinit var gdpList: MutableList<GDP>
+    }
+
+    fun main(args: Array<String>) {
+        gdpList = GdpList().gdpList
+        runApplication<GdpApplication>(*args)
+    }
 }
