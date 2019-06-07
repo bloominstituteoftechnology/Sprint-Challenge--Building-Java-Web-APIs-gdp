@@ -60,6 +60,11 @@ class GdpController{
         return ResponseEntity(GDP("total", GdpApplication.getOurGdpList().getTotal().toString()), HttpStatus.OK)
     }
 
+    @GetMapping(value = ["/names/{start}/{end}"])
+    fun getTableStartEndLetter(@PathVariable start: Char, @PathVariable end: Char): ResponseEntity<Any>{
+        return ResponseEntity(GdpApplication.getOurGdpList().gdpList.filter
+        { x -> x.name.toCharArray()[0] in start..end }.sortedBy { x -> x.name }, HttpStatus.OK)
+    }
 
 
 }
