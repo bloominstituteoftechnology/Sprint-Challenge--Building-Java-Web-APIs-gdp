@@ -3,6 +3,14 @@ package com.jakeesveld.gdp
 class GdpList {
     val gdpList: MutableList<GDP> = mutableListOf<GDP>()
 
+    fun getTotal(): Long{
+        var total: Long= 0
+        for(x: GDP in gdpList){
+            total += x.gdp.toLong()
+        }
+        return total
+    }
+
 
     init {
         gdpList.add(GDP("United States", "20513000"))

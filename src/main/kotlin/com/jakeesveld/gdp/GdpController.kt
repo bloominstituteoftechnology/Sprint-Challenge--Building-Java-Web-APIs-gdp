@@ -54,6 +54,12 @@ class GdpController{
         return mav
     }
 
+    @GetMapping(value = ["/total"])
+    fun getTotalGDP(): ResponseEntity<Any>{
+        logger.info("/total accessed")
+        return ResponseEntity(GDP("total", GdpApplication.getOurGdpList().getTotal().toString()), HttpStatus.OK)
+    }
+
 
 
 }
