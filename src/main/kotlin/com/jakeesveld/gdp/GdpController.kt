@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.ModelAndView
 
 @RestController
 @RequestMapping(value = ["/gdp"])
@@ -24,7 +25,7 @@ class GdpController{
     @GetMapping(value = ["/economy"])
     fun getGdpByEconomy(): ResponseEntity<Any>{
         logger.info("/economy accessed")
-        return ResponseEntity(GdpApplication.getOurGdpList().gdpList.sortedBy { x -> x.gdp }, HttpStatus.OK)
+        return ResponseEntity(GdpApplication.getOurGdpList().gdpList.sortedByDescending { x -> x.gdp.toLong() }, HttpStatus.OK)
     }
 
     @GetMapping(value = ["/country/{id}"])
@@ -40,8 +41,17 @@ class GdpController{
     @GetMapping(value = ["/country/stats/median"])
     fun getMedianGdp(): ResponseEntity<Any>{
         logger.info("/country/stats/median accessed")
-        val tempList = GdpApplication.getOurGdpList().gdpList.sortedBy { x -> x.gdp }
-        return ResponseEntity(tempList[tempList.size / 2], HttpStatus.OK)
+        return ResponseEntity(GdpApplication.getOurGdpList().gdpList.sortedBy
+        { x -> x.gdp.toLong() }.get(GdpApplication.getOurGdpList().gdpList.size / 2), HttpStatus.OK)
+    }
+
+    @GetMapping(value = ["/economy/table"])
+    fun getEconomyTable(): ModelAndView{
+        val mav = ModelAndView()
+        mav.viewName = "gdps"
+        mav.addObject("countryList" , GdpApplication.getOurGdpList().gdpList.sortedByDescending { x -> x.gdp.toLong() })
+
+        return mav
     }
 
 
