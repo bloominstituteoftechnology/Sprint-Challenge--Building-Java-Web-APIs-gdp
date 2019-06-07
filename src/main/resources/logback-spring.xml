@@ -26,7 +26,6 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
     </root>
     <logger name="org.apache.catalina" level="OFF">
         <appender-ref ref="TOMCAT" />

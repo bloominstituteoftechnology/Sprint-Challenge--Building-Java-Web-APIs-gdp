@@ -18,25 +18,29 @@ class GdpController{
     @GetMapping(value = ["/names"])
     fun getGdpNamesAlphabetized(): ResponseEntity<Any>{
         logger.info("/names accessed")
-        return ResponseEntity(GdpApplication.gdpList.sortBy { x -> x.name }, HttpStatus.OK)
+        return ResponseEntity(GdpApplication.getOurGdpList().gdpList.sortedBy { x -> x.name }, HttpStatus.OK)
     }
 
     @GetMapping(value = ["/economy"])
     fun getGdpByEconomy(): ResponseEntity<Any>{
         logger.info("/economy accessed")
-        return ResponseEntity(GdpApplication.gdpList.sortBy { x -> x.gdp }, HttpStatus.OK)
+        return ResponseEntity(GdpApplication.getOurGdpList().gdpList.sortedBy { x -> x.gdp }, HttpStatus.OK)
     }
 
     @GetMapping(value = ["/country/{id}"])
     fun getGdpById(@PathVariable id: Long):ResponseEntity<Any>{
         logger.info("/country/$id accessed")
-        return ResponseEntity(GdpApplication.gdpList.filter { x -> x.id == id }, HttpStatus.OK)
+        val found = GdpApplication.getOurGdpList().gdpList.filter { x -> x.id == id }
+        if(found.isEmpty()){
+            throw ResourceNotFoundException(message = "Count not find country with id $id", cause = null)
+        }
+        return ResponseEntity(found, HttpStatus.OK)
     }
 
     @GetMapping(value = ["/country/stats/median"])
     fun getMedianGdp(): ResponseEntity<Any>{
         logger.info("/country/stats/median accessed")
-        val tempList = GdpApplication.gdpList.sortedBy { x -> x.gdp }
+        val tempList = GdpApplication.getOurGdpList().gdpList.sortedBy { x -> x.gdp }
         return ResponseEntity(tempList[tempList.size / 2], HttpStatus.OK)
     }
 
