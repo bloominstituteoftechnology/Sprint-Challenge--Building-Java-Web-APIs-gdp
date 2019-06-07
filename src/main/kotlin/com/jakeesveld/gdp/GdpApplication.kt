@@ -7,7 +7,7 @@ import org.springframework.boot.runApplication
 class GdpApplication {
 
     companion object{
-        private lateinit var gdpList: MutableList<GDP>
+        lateinit var gdpList: MutableList<GDP>
     }
 
     fun main(args: Array<String>) {

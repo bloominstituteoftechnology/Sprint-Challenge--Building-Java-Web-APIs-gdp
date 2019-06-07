@@ -3,26 +3,6 @@ package com.jakeesveld.gdp
 class GdpList {
     val gdpList: MutableList<GDP> = mutableListOf<GDP>()
 
-    fun findGDP(tester: CheckGDP): GDP? {
-        for (x in gdpList) {
-            if (tester.test(x)) {
-                return x
-            }
-        }
-        return null
-    }
-
-    fun findGDPs(tester: CheckGDP): List<GDP> {
-        val tempGDPList = mutableListOf<GDP>()
-
-        for (x in gdpList) {
-            if (tester.test(x)) {
-                tempGDPList.add(x)
-            }
-        }
-
-        return tempGDPList
-    }
 
     init {
         gdpList.add(GDP("United States", "20513000"))
@@ -126,16 +106,5 @@ class GdpList {
         gdpList.add(GDP("Cameroon", "38445"))
         gdpList.add(GDP("Latvia", "34286"))
         gdpList.add(GDP("Sudan", "33249"))
-    }
-}
-
-interface CheckGDP {
-    fun test(x: GDP): Boolean
-
-    companion object {
-        inline operator fun invoke(crossinline op: (x: GDP) -> Boolean) =
-                object  : CheckGDP {
-                    override fun test(x: GDP): Boolean = op(x)
-                }
     }
 }
