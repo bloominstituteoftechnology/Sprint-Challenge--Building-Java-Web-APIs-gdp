@@ -61,10 +61,20 @@ class GdpController{
     }
 
     @GetMapping(value = ["/names/{start}/{end}"])
-    fun getTableStartEndLetter(@PathVariable start: Char, @PathVariable end: Char): ResponseEntity<Any>{
-        return ResponseEntity(GdpApplication.getOurGdpList().gdpList.filter
-        { x -> x.name.toCharArray()[0] in start..end }.sortedBy { x -> x.name }, HttpStatus.OK)
+    fun getTableStartEndLetter(@PathVariable start: Char, @PathVariable end: Char): ModelAndView{
+        val returned =  GdpApplication.getOurGdpList().gdpList.filter{ x -> x.name.toCharArray()[0] in start..end }.sortedBy { x -> x.name }
+        val mav = ModelAndView()
+        mav.viewName = "gdps"
+        mav.addObject("countryList", returned)
+        return mav
     }
 
-
+    @GetMapping(value = ["/list/{start}/{end}"])
+    fun getTableStartEndGDP(@PathVariable start: Long, @PathVariable end: Long): ModelAndView{
+        val returned = GdpApplication.getOurGdpList().gdpList.filter { x -> x.gdp.toLong() in start..end }.sortedBy { x -> x.gdp.toLong() }
+        val mav = ModelAndView()
+        mav.viewName = "gdps"
+        mav.addObject("countryList", returned)
+        return mav
+    }
 }
