@@ -36,6 +36,7 @@ Add appropriate exception handling routines. This is the standard exception hand
 Add appropriate logging routines. This is the standard logging covered in class. Required logging include
 * Activating actuator endpoints
 * Tomcat logging routed to a separate log file
+
 Custom logging under each Get endpoint saying the endpoint has been accessed
 * should only go to console
 * for example when a client calls /names log should say "/names accessed"
