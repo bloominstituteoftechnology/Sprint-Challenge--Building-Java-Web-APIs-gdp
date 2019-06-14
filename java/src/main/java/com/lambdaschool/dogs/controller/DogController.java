@@ -1,7 +1,7 @@
 package com.lambdaschool.dogs.controller;
 
-import com.lambdaschool.dogs.DogsinitialApplication;
-import com.lambdaschool.dogs.model.Dog;
+import com.lambdaschool.dogs.GDPjavaApplication;
+import com.lambdaschool.dogs.model.GDP;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,30 +12,32 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/dogs")
+@RequestMapping("/countries")
 public class DogController
 {
-    // localhost:8080/dogs/dogs
-    @GetMapping(value = "/dogs")
-    public ResponseEntity<?> getAllDogs()
+    // localhost:2019/data/gdp
+    @GetMapping(value = "/gdp")
+    public ResponseEntity<?> getAllGDP()
     {
-        return new ResponseEntity<>(DogsinitialApplication.ourDogList.dogList, HttpStatus.OK);
+        GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> e1.getStrName().compareToIgnoreCase(e2.getStrName()));
+
+        return new ResponseEntity<>(GDPjavaApplication.gdpList.gdpList, HttpStatus.OK);
     }
 
-    // localhost:8080/dogs/{id}
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getDogDetail(@PathVariable long id)
+    // localhost:2019/data/gdp/{id}
+    @GetMapping(value = "/gdp/{id}")
+    public ResponseEntity<?> getGDPbyID(@PathVariable int id)
     {
-        Dog rtnDog = DogsinitialApplication.ourDogList.findDog(d -> (d.getId() == id));
-        return new ResponseEntity<>(rtnDog, HttpStatus.OK);
+        GDP rtnGDP = GDPjavaApplication.gdpList.findGDP(d -> (d.getiID() == id));
+        return new ResponseEntity<>(rtnGDP, HttpStatus.OK);
     }
 
-    // localhost:8080/dogs/breeds/{breed}
-    @GetMapping(value = "/breeds/{breed}")
-    public ResponseEntity<?> getDogBreeds (@PathVariable String breed)
+    // localhost:2019/gdp/gdp/{gdp}
+    @GetMapping(value = "/gdp/{gdp}")
+    public ResponseEntity<?> getDogBreeds (@PathVariable long lGDP)
     {
-        ArrayList<Dog> rtnDogs = DogsinitialApplication.ourDogList.
-                findDogs(d -> d.getBreed().toUpperCase().equals(breed.toUpperCase()));
-        return new ResponseEntity<>(rtnDogs, HttpStatus.OK);
+      //  int iGDP=Integer.parseInt(strGDP);
+        ArrayList<GDP> rtnGDP = GDPjavaApplication.gdpList.findListOfGDP(d -> d.getlGDP()==lGDP);
+        return new ResponseEntity<>(rtnGDP, HttpStatus.OK);
     }
 }
