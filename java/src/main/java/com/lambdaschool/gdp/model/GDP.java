@@ -8,11 +8,18 @@ public class GDP {
     private String strName;
     private long lGDP;
 
-    public GDP(String strName, int lGDP) {
+    public GDP(String strName, int iGDP) {
+        this.iID = iCounter.incrementAndGet();
+        this.strName = strName;
+        this.lGDP = (long)iGDP;
+    }
+
+    public GDP(String strName, long lGDP) {
         this.iID = iCounter.incrementAndGet();
         this.strName = strName;
         this.lGDP = lGDP;
     }
+
 
     public GDP(String strName, String strGDP) {
         this.iID = iCounter.incrementAndGet();

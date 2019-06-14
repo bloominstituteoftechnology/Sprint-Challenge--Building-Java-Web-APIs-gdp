@@ -33,7 +33,31 @@ public class GDPList {
         return tempcountryList;
     }
 
+    public long total(){
+        long lTotal=0;
+        for (GDP e: gdpList)
+        {
+            lTotal+=e.getlGDP();
 
+        }
+
+
+        return lTotal;
+    }
+    public ArrayList<GDP> getListNameBetween(char cStart, char cEnd){
+
+        ArrayList<GDP> tempcountryList = new ArrayList<>();
+        if(cStart>96)cStart-=32;
+        if(cEnd>96)cEnd-=32;
+        for (GDP e: gdpList) {
+            char cTemp=e.getStrName().toUpperCase().charAt(0);
+            if (cStart<=cTemp  &&cEnd>=cTemp){
+                tempcountryList.add(e);
+            }
+        }
+
+        return tempcountryList;
+    }
 
     public GDPList(){
         gdpList.add(new GDP("United States","20513000"));
