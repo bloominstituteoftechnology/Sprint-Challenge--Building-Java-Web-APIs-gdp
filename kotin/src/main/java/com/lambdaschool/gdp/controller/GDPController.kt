@@ -22,11 +22,11 @@ class GDPController {
     // localhost:2019/data/gdp/economy
     // - return using the JSON format all of the countries sorted from most to least GDP
     //for sorting you might have to type cast so .sort((c1, c2) -> (int)(c2.getGDP() - c1.getGDP()))
-    val economyFromGreater: ResponseEntity<*>
-        @GetMapping(value = "/economy")
+    val lateeconomyFromGreater: ResponseEntity<*>
+    @GetMapping(value = ["/economy"])
         get() {
             logger.info("/economy accessed")
-            GDPjavaApplication.gdpList.gdpList.sort { e1, e2 -> (e2.getlGDP() - e1.getlGDP()).toInt() }
+            GDPjavaApplication.gdpList.gdpList.sortBy {it.strName }
             return ResponseEntity(GDPjavaApplication.gdpList.gdpList, HttpStatus.OK)
         }
 
@@ -35,19 +35,18 @@ class GDPController {
     // For odd number list, return the the country in the middle.
     // For even number list you may return either one of the countries found in the middle.
     val median: ResponseEntity<*>
-        @GetMapping(value = "/country/stats/median", produces = ["application/json"])
+        @GetMapping(value = ["/country/stats/median"], produces = ["application/json"])
         get() {
             logger.info("country/stats/median accessed")
-            GDPjavaApplication.gdpList.gdpList.sort { e1, e2 -> (e2.getlGDP() - e1.getlGDP()).toInt() }
+            GDPjavaApplication.gdpList.gdpList.sortBy{it.getlGDP()}
             val iNumberofCountries = GDPjavaApplication.gdpList.gdpList.size
             if (iNumberofCountries % 2 == 0) {
                 val rtnCountries = ArrayList<GDP>()
-                rtnCountries.add(GDPjavaApplication.gdpList.findGDP({ e -> e.getiID() == iNumberofCountries / 2 }))
-                rtnCountries.add(GDPjavaApplication.gdpList.findGDP({ e -> e.getiID() == iNumberofCountries / 2 - 1 }))
-
+                GDPjavaApplication.gdpList.findCountryByID(iNumberofCountries / 2)?.let { rtnCountries.add(it) }
+                GDPjavaApplication.gdpList.findCountryByID(iNumberofCountries / 2-1)?.let { rtnCountries.add(it) }
                 return ResponseEntity(rtnCountries, HttpStatus.OK)
             } else {
-                val rtnCountry = GDPjavaApplication.gdpList.findGDP({ e -> e.getiID() == iNumberofCountries / 2 })
+                val rtnCountry = GDPjavaApplication.gdpList.findCountryByID(iNumberofCountries / 2)
                 return ResponseEntity(rtnCountry, HttpStatus.OK)
             }
 
@@ -57,10 +56,10 @@ class GDPController {
     // Create server side rendering pages using Thymeleaf to
     //    - display a table list all countries sorted from most to least GDP
     val gdPtable: ModelAndView
-        @GetMapping(value = "/economy/table")
+        @GetMapping(value = ["/economy/table"])
         get() {
             logger.info("/economy/table accessed")
-            GDPjavaApplication.gdpList.gdpList.sort { e1, e2 -> (e2.getlGDP() - e1.getlGDP()).toInt() }
+            GDPjavaApplication.gdpList.gdpList.sortBy {it.getlGDP() }
             val rtnGDP = GDPjavaApplication.gdpList.gdpList
             val mav = ModelAndView()
             mav.viewName = "gdptable"
@@ -72,7 +71,7 @@ class GDPController {
     // localhost:2019/data/gdp/country/stats/total
     // - return the sum of all GDPs using the JSON format with country name being returned as Total/total
     val total: ResponseEntity<*>
-        @GetMapping(value = "/country/stats/total", produces = ["application/json"])
+        @GetMapping(value = ["/country/stats/total"], produces = ["application/json"])
         get() {
             logger.info("country/stats/total accessed")
             GDPjavaApplication.gdpList.total()
@@ -82,7 +81,7 @@ class GDPController {
 
     // localhost:2019/data/dgp/names
     //  - return using the JSON format all of the countries alphabetized by name
-    @GetMapping(value = "/name")
+    @GetMapping(value = ["/name"])
     fun getAllGDP(request: HttpServletRequest): ResponseEntity<*> {
 
         //       Custom logging under each Get endpoint saying the endpoint has been accessed
@@ -94,7 +93,7 @@ class GDPController {
         //You are not to log access to the server side rendering pages.
         logger.info("/names accessed")
         logger.trace(request.requestURI + " accessed")
-        GDPjavaApplication.gdpList.gdpList.sort { e1, e2 -> e1.strName.compareTo(e2.strName, ignoreCase = true) }
+        GDPjavaApplication.gdpList.gdpList.sortBy { it.strName }
 
 
         return ResponseEntity(GDPjavaApplication.gdpList.gdpList, HttpStatus.OK)
@@ -102,14 +101,14 @@ class GDPController {
 
 
     // localhost:2019/data/gdp/country/{id} - return using the JSON format a single country and GDP based off of its id number
-    @GetMapping(value = "/country/{id}", produces = ["application/json"])
+    @GetMapping(value = ["/country/{id}"], produces = ["application/json"])
     fun getCountrybyID(request: HttpServletRequest,
                        @PathVariable
-                       id: Long): ResponseEntity<*> {
+                       id: Int): ResponseEntity<*> {
         logger.info("/country/{id} accessed")
         logger.trace(request.requestURI + " accessed")
 
-        val rtnCountry = GDPjavaApplication.gdpList.findGDP({ e -> e.getiID().toLong() == id })
+        val rtnCountry = GDPjavaApplication.gdpList.findCountryByID(id)
         return ResponseEntity(rtnCountry, HttpStatus.OK)
     }
 
@@ -117,12 +116,12 @@ class GDPController {
     // localhost:2019/data/gdp/names/{start letter}/{end letter}
     // - display a table listing all countries in alphabetical order
     // that begin with letters between start and end letter inclusive.
-    @GetMapping(value = "/names/{cStart}/{cEnd}", produces = ["application/json"])
+    @GetMapping(value = ["/names/{cStart}/{cEnd}"], produces = ["application/json"])
     fun getFindNameBetween(request: HttpServletRequest, @PathVariable cStart: Char, @PathVariable cEnd: Char): ModelAndView {
         logger.info("/names/{cStart}/{cEnd}")
         logger.trace(request.requestURI + " accessed")
         val rtnGDP = GDPjavaApplication.gdpList.getListNameBetween(cStart, cEnd)
-        rtnGDP.sort { e1, e2 -> e1.strName.compareTo(e2.strName, ignoreCase = true) }
+        rtnGDP.sortBy {it.strName }
         val mav = ModelAndView()
         mav.viewName = "gdptable"
         mav.addObject("gdpList", rtnGDP)
@@ -133,14 +132,14 @@ class GDPController {
     //    by GDP from least to greatest where the country's GDP lies
     //    between start gdp and end gdp inclusive.
 
-    @GetMapping(value = "/list/{lLowest}/{lHighest}", produces = ["application/json"])
+    @GetMapping(value = ["/list/{lLowest}/{lHighest}"], produces = ["application/json"])
     fun getFindGDPBetween(request: HttpServletRequest, @PathVariable lLowest: Long, @PathVariable lHighest: Long): ModelAndView {
         logger.info("/list/{lLowest}/{lHighest}")
         logger.trace(request.requestURI + " accessed")
-        GDPjavaApplication.gdpList.gdpList.sort { e1, e2 -> e1.strName.compareTo(e2.strName, ignoreCase = true) }
+        GDPjavaApplication.gdpList.gdpList.sortBy {it.strName }
 
         val rtnGDP = GDPjavaApplication.gdpList.getListGDPBetween(lLowest, lHighest)
-        rtnGDP.sort { e1, e2 -> (e1.getlGDP() - e2.getlGDP()).toInt() }
+        rtnGDP.sortBy {it.getlGDP() }
 
         val mav = ModelAndView()
         mav.viewName = "gdptable"
