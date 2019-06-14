@@ -2,6 +2,8 @@ package com.lambdaschool.gdp.controller;
 
 import com.lambdaschool.gdp.GDPjavaApplication;
 import com.lambdaschool.gdp.model.GDP;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +16,23 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/gdp")
-public class DogController
+public class GDPController
 {
+    private static final Logger logger = LoggerFactory.getLogger(GDPController.class);
     // localhost:2019/data/dgp/names
     //  - return using the JSON format all of the countries alphabetized by name
     @GetMapping(value = "/name")
     public ResponseEntity<?> getAllGDP()
     {
+
+ //       Custom logging under each Get endpoint saying the endpoint has been accessed
+
+   //    should only go to console
+     //   for example when a client calls /names log should say "/names accessed"
+       // in the log entry include any parameters that were sent to the endpoint
+      //  in the log entry include the date and timestamp of the access of the endpoint
+        //You are not to log access to the server side rendering pages.
+        logger.info("/names accessed");
         GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> e1.getStrName().compareToIgnoreCase(e2.getStrName()));
 
 
@@ -33,6 +45,7 @@ public class DogController
     @GetMapping(value = "/economy")
     public ResponseEntity<?> getEconomyFromGreater()
     {
+        logger.info("/economy accessed");
         GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> (int)(e2.getlGDP() - e1.getlGDP()));
         return new ResponseEntity<>(GDPjavaApplication.gdpList.gdpList, HttpStatus.OK);
     }
@@ -45,6 +58,7 @@ public class DogController
             @PathVariable
                     long id)
     {
+        logger.info("/country/{id} accessed");
         GDP rtnCountry  = GDPjavaApplication.gdpList.findGDP(e -> (e.getiID() == id));
         return new ResponseEntity<>(rtnCountry , HttpStatus.OK);
     }
@@ -56,6 +70,7 @@ public class DogController
    @GetMapping(value = "/country/stats/median",
            produces = {"application/json"})
    public ResponseEntity<?> getMedian() {
+       logger.info("country/stats/median accessed");
        GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> (int)(e2.getlGDP() - e1.getlGDP()));
        int iNumberofCountries=GDPjavaApplication.gdpList.gdpList.size();
        if(iNumberofCountries%2==0){
@@ -76,6 +91,7 @@ public class DogController
     //    - display a table list all countries sorted from most to least GDP
     @GetMapping(value = "/economy/table")
     public ModelAndView getGDPtable () {
+        logger.info("/economy/table accessed");
         GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> (int)(e2.getlGDP() - e1.getlGDP()));
         ArrayList<GDP> rtnGDP = GDPjavaApplication.gdpList.gdpList;
         ModelAndView mav = new ModelAndView();
@@ -85,17 +101,10 @@ public class DogController
 
     }
     /*
-Custom logging under each Get endpoint saying the endpoint has been accessed
 
-    should only go to console
-    for example when a client calls /names log should say "/names accessed"
-        in the log entry include any parameters that were sent to the endpoint
-        in the log entry include the date and timestamp of the access of the endpoint
-    You are not to log access to the server side rendering pages.
 
 Note: put the log files under the directory /tmp/var/logs/lambdajx Feel free to create and necessary subdirectories.
 
-Finally, deploy the application in a JAR file to Heroku. For the application name use -gdp
 Stretch Goals
 
 Expose the following end-point
