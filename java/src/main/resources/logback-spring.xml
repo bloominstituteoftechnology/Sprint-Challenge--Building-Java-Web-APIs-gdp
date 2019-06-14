@@ -1,5 +1,12 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 
+<!--
+        Add appropriate logging routines. This is the standard logging covered in class. Required logging include
+        Activating actuator endpoints
+        Tomcat logging routed to a separate log file
+
+-->
+
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

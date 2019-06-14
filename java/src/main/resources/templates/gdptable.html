@@ -10,8 +10,8 @@
         <th>Weight</th>
     </tr>
     <tr th:each="gdp : ${gdpList}">
-        <td th:text="${gdp.name}">Name</td>
-        <td th:text="${gdp.GDP}">Weight</td>
+        <td th:text="${gdp.strName}">Name</td>
+        <td th:text="${gdp.lGDP}">Weight</td>
     </tr>
 </table>
 <strong><a href="/">Click here to go back</a></strong>

@@ -15,7 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+
+
+
+//Add appropriate exception handling routines. This is the standard exception handling covered in class. Required exceptions to handle are when
+
 // bean shared across controller classes
+//       a resource is not found
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler
 {
@@ -32,6 +38,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
     }
 
+//        the wrong data type is used for a path variable
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
@@ -46,6 +53,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
     }
 
+
+    //        a non-handled endpoint is accessed (a URL not found exception)
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
     {

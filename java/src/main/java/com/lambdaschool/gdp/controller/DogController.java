@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class DogController
     public ResponseEntity<?> getAllGDP()
     {
         GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> e1.getStrName().compareToIgnoreCase(e2.getStrName()));
+
 
         return new ResponseEntity<>(GDPjavaApplication.gdpList.gdpList, HttpStatus.OK);
     }
@@ -69,30 +71,20 @@ public class DogController
 
    }
 
-    // localhost:2019/data/gdp//economy/table
+    // localhost:2019/data/gdp/economy/table
     // Create server side rendering pages using Thymeleaf to
     //    - display a table list all countries sorted from most to least GDP
-    @GetMapping(value = "/gdp/{gdp}")
-    public ResponseEntity<?> getDogBreeds (@PathVariable long lGDP)
-    {
-      //  int iGDP=Integer.parseInt(strGDP);
-        ArrayList<GDP> rtnGDP = GDPjavaApplication.gdpList.findListOfGDP(d -> d.getlGDP()==lGDP);
-        return new ResponseEntity<>(rtnGDP, HttpStatus.OK);
+    @GetMapping(value = "/economy/table")
+    public ModelAndView getGDPtable () {
+        GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> (int)(e2.getlGDP() - e1.getlGDP()));
+        ArrayList<GDP> rtnGDP = GDPjavaApplication.gdpList.gdpList;
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("gdptable");
+        mav.addObject("gdpList", rtnGDP);
+        return mav;
+
     }
     /*
-
-
-Add appropriate exception handling routines. This is the standard exception handling covered in class. Required exceptions to handle are when
-
-    a resource is not found
-    the wrong data type is used for a path variable
-    a non-handled endpoint is accessed (a URL not found exception)
-
-Add appropriate logging routines. This is the standard logging covered in class. Required logging include
-
-    Activating actuator endpoints
-    Tomcat logging routed to a separate log file
-
 Custom logging under each Get endpoint saying the endpoint has been accessed
 
     should only go to console
