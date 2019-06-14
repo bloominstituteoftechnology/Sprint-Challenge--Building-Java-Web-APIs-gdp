@@ -1,7 +1,6 @@
-package com.lambdaschool.dogs.model;
+package com.lambdaschool.gdp.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class GDP {
     private static final AtomicInteger iCounter = new AtomicInteger();

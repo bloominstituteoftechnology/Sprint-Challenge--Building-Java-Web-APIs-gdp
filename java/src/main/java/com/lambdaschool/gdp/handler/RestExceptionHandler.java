@@ -1,7 +1,7 @@
-package com.lambdaschool.dogs.handler;
+package com.lambdaschool.gdp.handler;
 
-import com.lambdaschool.dogs.exception.ResourceNotFoundException;
-import com.lambdaschool.dogs.model.ErrorDetail;
+import com.lambdaschool.gdp.exception.ResourceNotFoundException;
+import com.lambdaschool.gdp.model.ErrorDetail;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
-package com.lambdaschool.dogs.model;
+package com.lambdaschool.gdp.model;
 
-import com.lambdaschool.dogs.exception.ValidationError;
+import com.lambdaschool.gdp.exception.ValidationError;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.lambdaschool.dogs.exception;
+package com.lambdaschool.gdp.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,4 +1,4 @@
-package com.lambdaschool.dogs;
+package com.lambdaschool.gdp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

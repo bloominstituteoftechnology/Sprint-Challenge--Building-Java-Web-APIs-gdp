@@ -1,6 +1,6 @@
-package com.lambdaschool.dogs.model;
+package com.lambdaschool.gdp.model;
 
-import com.lambdaschool.dogs.CheckGDP;
+import com.lambdaschool.gdp.CheckGDP;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class GDPList {
 
 
     public GDPList(){
-        gdpList.add(new GDP("United States","20513000"));
+     //   gdpList.add(new GDP("United States","20513000"));
         gdpList.add(new GDP("China","13457267"));
         gdpList.add(new GDP("Japan","5070626"));
         gdpList.add(new GDP("Germany","4029140"));

@@ -1,4 +1,4 @@
-package com.lambdaschool.dogs.exception;
+package com.lambdaschool.gdp.exception;
 
 public class ValidationError
 {
