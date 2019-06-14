@@ -59,6 +59,20 @@ public class GDPList {
         return tempcountryList;
     }
 
+    public ArrayList<GDP> getListGDPBetween(long lLowest, long lHighest){
+
+        ArrayList<GDP> tempcountryList = new ArrayList<>();
+
+        for (GDP e: gdpList) {
+            long lTemp=e.getlGDP();
+            if (lLowest<=lTemp &&lHighest>=lTemp){
+                tempcountryList.add(e);
+            }
+        }
+
+        return tempcountryList;
+    }
+
     public GDPList(){
         gdpList.add(new GDP("United States","20513000"));
         gdpList.add(new GDP("China","13457267"));

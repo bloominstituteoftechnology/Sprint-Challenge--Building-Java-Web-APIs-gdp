@@ -129,6 +129,7 @@ public class GDPController
         logger.info("/names/{cStart}/{cEnd}");
         logger.trace(request.getRequestURI() + " accessed");
         ArrayList<GDP> rtnGDP = GDPjavaApplication.gdpList.getListNameBetween(cStart,cEnd);
+        rtnGDP.sort((e1,e2)->e1.getStrName().compareToIgnoreCase(e2.getStrName()));
         ModelAndView mav = new ModelAndView();
         mav.setViewName("gdptable");
         mav.addObject("gdpList", rtnGDP);
@@ -139,7 +140,24 @@ public class GDPController
     //    by GDP from least to greatest where the country's GDP lies
     //    between start gdp and end gdp inclusive.
 
+    @GetMapping(value = "/list/{lLowest}/{lHighest}",
+            produces = {"application/json"})
+    public ModelAndView getFindGDPBetween(HttpServletRequest request
+            , @PathVariable  long lLowest
+            , @PathVariable long lHighest)
+    {
+        logger.info("/list/{lLowest}/{lHighest}");
+        logger.trace(request.getRequestURI() + " accessed");
+        GDPjavaApplication.gdpList.gdpList.sort((e1, e2) -> e1.getStrName().compareToIgnoreCase(e2.getStrName()));
 
+        ArrayList<GDP> rtnGDP = GDPjavaApplication.gdpList.getListGDPBetween(lLowest,lHighest);
+        rtnGDP.sort((e1,e2)->(int)(e1.getlGDP()-e2.getlGDP()));
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("gdptable");
+        mav.addObject("gdpList", rtnGDP);
+        return mav;
+    }
 
 
 
